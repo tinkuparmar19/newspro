@@ -7,14 +7,12 @@ function Home() {
     const {state, dispatch} = useContext(userContext)
     const [page, setPage] = useState(1)
     const [query, setQuery] = useState('')
-    const key = 'cef921a2cfe34ab4a4b8766e5dc5bed0'
-
+    
     useEffect(() => {
-        fetch(`https://newsapi.org/v2/everything?q=everything&from=2021-03-20&to=2021-03-31&sortBy=popularity&page=${page}&apiKey=${key}`)
+        fetch(`https://newsapi.org/v2/everything?q=everything&from=2021-03-20&to=2021-03-31&sortBy=popularity&page=${page}&apiKey=${process.env.REACT_APP_API_KEY}`)
         .then(res => res.json())
         .then(result => {
             if(result.articles !== undefined) {
-                // console.log(result.articles)
                 dispatch({ type: 'ADD_DATA', payload: result.articles})
             }
         })
