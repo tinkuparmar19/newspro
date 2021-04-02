@@ -16,7 +16,7 @@
 
 3. **Add api key**
    ```shell
-   register [Here](https://newsapi.org/)
+   register [Here](https://newsapi.org)
    get api key
    create .env file
    REACT_APP_API_KEY = your api key
