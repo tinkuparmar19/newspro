@@ -16,6 +16,7 @@ function Nav() {
             if(nav.indexOf(content.source.name) === -1) {
                 nav.push(content.source.name)
             }
+            return nav
         })
     }, [state])
 

@@ -17,13 +17,16 @@ function Home() {
     const [query, setQuery] = useState('')
 
     useEffect(() => {
-        fetch(`https://newsapi.org/v2/everything?q=everything&from=2021-03-20&to=2021-03-31&sortBy=popularity&page=${page}&apiKey=${process.env.REACT_APP_API_KEY}`)
-        .then(res => res.json())
-        .then(result => {
-            if(result.articles !== undefined) {
-                dispatch({ type: 'ADD_DATA', payload: result.articles})
-            }
-        })
+        function apiFetch() {
+            fetch(`https://newsapi.org/v2/everything?q=everything&from=2021-03-20&to=2021-03-31&sortBy=popularity&page=${page}&apiKey=${process.env.REACT_APP_API_KEY}`)
+            .then(res => res.json())
+            .then(result => {
+                if(result.articles !== undefined) {
+                    dispatch({ type: 'ADD_DATA', payload: result.articles}) 
+                }
+            })
+        }
+        apiFetch()
     }, [page])
 
     let searchData 
