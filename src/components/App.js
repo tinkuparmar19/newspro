@@ -1,6 +1,8 @@
 import React, { createContext, useReducer } from 'react'
 import { initialState, reducer } from '../Reducer';
 
+import { Layout } from 'antd';
+
 import Home from './Home'
 import Nav from './Nav';
 
@@ -10,10 +12,12 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
-    <div className="App">
+    <div>
       <userContext.Provider value={{state, dispatch}}>
-          <Nav />
-          <Home />
+          <Layout>
+            <Nav />
+            <Home />
+          </Layout>
       </userContext.Provider>
     </div>
   );
