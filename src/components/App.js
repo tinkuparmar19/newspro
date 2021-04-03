@@ -1,24 +1,25 @@
-import React, { createContext, useReducer } from 'react'
-import { initialState, reducer } from '../Reducer';
-
-import { Layout } from 'antd';
+import React from 'react'
 
 import Home from './Home'
 import Nav from './Nav';
-
-export const userContext = createContext()
+import Bookmark from './Bookmark';
+import { BrowserRouter, Route } from 'react-router-dom';
+import BookMarkList from './BookMarkList';
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
     <div>
-      <userContext.Provider value={{state, dispatch}}>
-          <Layout>
+        <BrowserRouter>
+          <Route path='/' exact>
+            <Bookmark />
             <Nav />
             <Home />
-          </Layout>
-      </userContext.Provider>
+          </Route>
+          <Route path='/bookmark'>
+            <BookMarkList />
+          </Route>
+        </BrowserRouter>
     </div>
   );
 }

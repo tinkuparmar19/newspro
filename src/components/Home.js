@@ -1,18 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { userContext } from './App'
 import {DebounceInput} from 'react-debounce-input'
 
 import { Layout } from 'antd';
 import NewsCard from './NewsCard';
 import './Home.css'
+import { useSelector, useDispatch } from 'react-redux';
+import {addNews} from '../actions'
 
 const { Content } = Layout;
 
-
-
 function Home() {
-    const {state, dispatch} = useContext(userContext)
+    const news = useSelector(state => state.news)
+    const filter = useSelector(state => state.filter)
+
+    const dispatch = useDispatch()
     const [page, setPage] = useState(1)
     const [query, setQuery] = useState('')
 
@@ -22,21 +24,24 @@ function Home() {
             .then(res => res.json())
             .then(result => {
                 if(result.articles !== undefined) {
-                    dispatch({ type: 'ADD_DATA', payload: result.articles}) 
+                    console.log(result)
+                    dispatch(addNews(result.articles))
                 }
             })
         }
         apiFetch()
     }, [page])
 
-    let searchData 
-    if(query.trim().length > 2 && state.news.length > 0) {
-        searchData = (state.news.filter(item => {
+    let searchData
+
+    if(query.trim().length > 2 && news.length > 0) {
+        searchData = (news.filter(item => {
             return item.title.toLowerCase().includes(query.trim().toLowerCase()) || item.author.toLowerCase().includes(query.trim().toLowerCase())
     }))
     } else {
-        searchData = state.filter ? state.filter : state.news
+        searchData = filter.length > 0 ? filter : news
     }
+
 
     return (
         <div className='home'>
@@ -58,9 +63,9 @@ function Home() {
                         hasMore={true}
                     >
                         {searchData && searchData.map(content => {
-                            return <NewsCard content={content} />
-                        })}
-                    </InfiniteScroll>
+                            return <NewsCard content={content} key={content.title}/>
+                        })} 
+                    </InfiniteScroll> 
                 </div>
             </Content>
         </div>

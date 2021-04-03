@@ -1,5 +1,7 @@
-import React, { useContext, useEffect } from 'react'
-import { userContext } from './App'
+import React, { useEffect } from 'react'
+
+import {useSelector, useDispatch} from 'react-redux'
+import {filterNews, showNews} from '../actions'
 
 import { Layout, Menu } from 'antd';
 
@@ -9,26 +11,28 @@ const { Sider } = Layout;
 let nav = [] 
 let count = 1
 function Nav() {
-    const { state, dispatch } = useContext(userContext)
-    
+    const news = useSelector(state => state.news)
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        state.news.map(content => {
+        news.map(content => {
             if(nav.indexOf(content.source.name) === -1) {
                 nav.push(content.source.name)
             }
             return nav
         })
-    }, [state])
+    }, [news])
 
     const handleClick = (item) => {
-        dispatch({ type: 'ADD_FILTER', payload: item })
+        dispatch(filterNews([news, item]))
     }
 
     const showAll = () => {
-        dispatch({ type: 'ALL', payload: '' })
+        dispatch(showNews(news))
     }
 
     return (
+        <div>
         <Sider
             className='site-layout-background'
             theme='light'
@@ -41,7 +45,7 @@ function Nav() {
                 left: 0,
             }}
         >
-        <h2 style={{textAlign: 'center', paddingTop: '30px'}}>Sources</h2>
+        <h2 style={{textAlign: 'center', paddingTop: '60px'}}>Sources</h2>
         <Menu mode="inline" defaultSelectedKeys={['1']} >
             <Menu.Item key="1" onClick={() => showAll()}>All</Menu.Item>
             {nav && nav.map(item => {
@@ -49,6 +53,7 @@ function Nav() {
             })}
         </Menu>
         </Sider>
+        </div>
     )
 }
 
